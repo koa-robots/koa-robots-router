@@ -1,30 +1,33 @@
 import fs from 'co-fs'
-import router from 'koa-router'
-import {join, isAbsolute} from 'path'
-import routes from '../resources/routes'
+import {join, normalize, resolve} from 'path'
 
-export default function(app, routerInstance = router()){
-    routes(routerInstance)
-    app.use(routerInstance.routes())
-    app.use(routerInstance.allowedMethods())
+export default function(root = '.', options = {}){
+    root = normalize(resolve(root))
 
-    return function(root = '', opts = {index : '/index'}){
-        root = toAbsolutePath(root)
+    options = Object.assign({
+        routes : null,
+        index : '/index'
+    }, options)
 
-        return function *(next){
-            let filePath = join(root, (this.path === '/' ? opts.index : this.path) + '.js')
-
-            if(yield fs.exists(filePath)){
-                yield _interopRequireDefault(require(filePath)).default().call(this, next)
-            }
-
-            yield next
-        }
+    for(let key in options.routes){
+        console.log(key)
     }
-}
 
-function toAbsolutePath(path){
-    return isAbsolute(path) ? path : join(process.cwd(), path)
+    return function *(next){
+        let path = join(root, (this.path === '/' ? options.index : this.path) + '.js')
+        
+        try{
+            if((yield fs.stat(path)).isFile()){
+                yield _interopRequireDefault(require(path)).default().call(this)
+            }
+        }catch(err){
+            if (~['ENOENT', 'ENAMETOOLONG', 'ENOTDIR'].indexOf(err.code)){
+                return
+            }
+        }
+
+        yield next
+    }
 }
 
 function _interopRequireDefault(obj){

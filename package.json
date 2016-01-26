@@ -8,7 +8,9 @@
     "node": ">=4.2.3"
   },
   "main": "./dist/index",
-  "dependencies": {},
+  "dependencies": {
+    "co-fs": "^1.2.0"
+  },
   "devDependencies": {
     "babel-core": "^6.4.0",
     "babel-plugin-transform-es2015-destructuring": "^6.4.0",
