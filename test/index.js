@@ -2,7 +2,7 @@ import koa from 'koa'
 import router from '../dist'
 import request from 'supertest'
 
-describe('render', () => {
+describe('routes', () => {
     it('normal', (done) => {
         var app = koa()
 
@@ -23,13 +23,17 @@ describe('render', () => {
             .expect(404, done)
     })
 
-    it('spec url', (done) => {
+    it('special url', (done) => {
         var app = koa()
 
         app.use(router('test/controllers', {
             routes : [
-                {url : 'video/:id', action : 'video'}
+                {url : '/:category/:title', controller : '/test'}
             ]
         }))
+
+        request(app.listen())
+            .get('/hello/world')
+            .expect('hello world', done)
     })
 })

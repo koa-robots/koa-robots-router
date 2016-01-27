@@ -9,7 +9,8 @@
   },
   "main": "./dist/index",
   "dependencies": {
-    "co-fs": "^1.2.0"
+    "co-fs": "^1.2.0",
+    "path-to-regexp": "^1.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
