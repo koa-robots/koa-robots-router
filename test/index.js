@@ -22,4 +22,14 @@ describe('render', () => {
             .get('/hello')
             .expect(404, done)
     })
+
+    it('spec url', (done) => {
+        var app = koa()
+
+        app.use(router('test/controllers', {
+            routes : [
+                {url : 'video/:id', action : 'video'}
+            ]
+        }))
+    })
 })
