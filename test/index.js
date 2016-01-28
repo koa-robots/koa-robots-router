@@ -36,4 +36,21 @@ describe('routes', () => {
             .get('/hello/world')
             .expect('hello world', done)
     })
+
+    it('special url not found', (done) => {
+        var app = koa()
+
+        app.use(router('test/controllers', {
+            routes : [
+                {url : '/:category/:title', controller : '/test'},
+                {url : '/:category/:title', controller : '/test'},
+                {url : '/:category/:title', controller : '/test'},
+                {url : '/:category/:title', controller : '/test'}
+            ]
+        }))
+
+        request(app.listen())
+            .get('/test')
+            .expect('test', done)
+    })
 })

@@ -24,6 +24,10 @@ exports.default = function () {
         for (let route of options.routes) {
             let matched, params;
 
+            if (this.path === '/') {
+                break;
+            }
+
             if (!(matched = route.url.exec(this.path))) {
                 continue;
             }

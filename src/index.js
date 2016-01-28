@@ -18,6 +18,10 @@ export default function(root = '.', options = {}){
     return function *(next){
         for(let route of options.routes){
             let matched, params
+            
+            if(this.path === '/'){
+                break
+            }
 
             if(!(matched = route.url.exec(this.path))){
                 continue
