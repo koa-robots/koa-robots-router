@@ -40,6 +40,7 @@ exports.default = function () {
 
             this.params = params;
             this.path = route.controller;
+            break;
         }
 
         if (this.params) {
